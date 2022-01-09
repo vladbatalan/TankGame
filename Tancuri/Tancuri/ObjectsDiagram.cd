@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Tancuri.Projectile" BaseTypeListCollapsed="true">
-    <Position X="0.5" Y="1.25" Width="1.5" />
+    <Position X="0.75" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACQAADAAAAAAAAAgAAAAAAAAAAEAAAAAAEAAAAAIAgA=</HashCode>
       <FileName>Objects\Projectile.cs</FileName>
@@ -9,7 +9,7 @@
     <Lollipop Position="0.971" Collapsed="true" />
   </Class>
   <Class Name="Tancuri.Tank" BaseTypeListCollapsed="true">
-    <Position X="4.5" Y="1.25" Width="1.5" />
+    <Position X="4.25" Y="0.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
@@ -20,7 +20,7 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Interface Name="Tancuri.PaintUpdateObject">
-    <Position X="2.5" Y="0.5" Width="1.5" />
+    <Position X="2.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
       <FileName>Objects\PaintUpdateObject.cs</FileName>
