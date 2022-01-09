@@ -65,11 +65,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Handlers\ObjectHandler.cs" />
-    <Compile Include="PaintUpdateObject.cs" />
+    <Compile Include="Objects\PaintUpdateObject.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Projectile.cs" />
+    <Compile Include="Objects\Projectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tank.cs" />
+    <Compile Include="Objects\Tank.cs" />
     <EmbeddedResource Include="GameWindow.resx">
       <DependentUpon>GameWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -82,7 +82,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="ClassDiagram1.cd" />
+    <None Include="HandlersDiagram.cd" />
+    <None Include="ObjectsDiagram.cd" />
+    <None Include="ControllerDiagram.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

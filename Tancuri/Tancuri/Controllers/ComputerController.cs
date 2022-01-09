@@ -13,13 +13,6 @@ namespace Tancuri
         private const int SHOOT_PAUSE_MILISECONDS = 500;
         private int timeSinceShoot = 0;
 
-        private Tuple<int, int>[] neighbours = new Tuple<int, int>[] {
-                new Tuple<int, int>(1,3),  // Neighbours of 0
-                new Tuple<int, int>(2,0),  // Neighbours of 1
-                new Tuple<int, int>(3,1),  // Neighbours of 2
-                new Tuple<int, int>(0,2)   // Neighbours of 3
-            };
-
         // Direction vector
         private Point[] directions = new Point[] {
                 new Point(-1, 0),    // UP            

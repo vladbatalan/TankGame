@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Tancuri.ComputerController">
+    <Position X="2.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAQAAAgAACAAgAAAAAAAAEAAAAAQBAEEAAAAA=</HashCode>
+      <FileName>Controllers\ComputerController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tancuri.KeyboardController">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARAAAAAAAAAgAAAAAgAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\KeyboardController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tancuri.Player1Controller">
+    <Position X="4.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\Player1Controller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tancuri.Player2Controller">
+    <Position X="6.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\Player2Controller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tancuri.PlayerController">
+    <Position X="5.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAIAASgAAAAAgAAAQAAAAAAIAAAAAAAAAAAAI=</HashCode>
+      <FileName>Controllers\PlayerController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
