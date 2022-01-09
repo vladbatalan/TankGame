@@ -47,10 +47,6 @@ namespace Tancuri
 
             //g.DrawLine(Pens.Black, new Point(50, 50), new Point(canvas.Height, canvas.Width));
             map.Paint(g);
-            foreach(Point pt in ((ComputerController)player2Controller).PathIndexes)
-            {
-                g.FillRectangle(Brushes.Beige, new Rectangle(new Point(map.TileWidth * (pt.Y - 1), map.TileHeight * (pt.X-1)), new Size(map.TileWidth, map.TileHeight)));
-            }
 
             ObjectHandler.Paint(g);
         }
@@ -79,14 +75,6 @@ namespace Tancuri
                 // For computer controlled players
                 player1Controller.Update();
                 player2Controller.Update();
-
-
-                double normalizedAngle = player2Controller.ControlledTank.CannonAngle;
-                if (normalizedAngle < 0) normalizedAngle += 360;
-                labelDebug2.Text = "Cannon angle: " + normalizedAngle + "\r\n" +
-                                   "Targeted angle: " + ((ComputerController)player2Controller).TargetedAngle;
-                labelDebug2.Text += "\r\nNext Position: " + ((ComputerController)player2Controller).NextPosition.X + ", " +
-                    ((ComputerController)player2Controller).NextPosition.Y;
 
                 // Update screen labels
                 labelPalyer1Ammo.Text = "Ammunition:\n" + player1Controller.ControlledTank.Ammunition;

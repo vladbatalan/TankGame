@@ -10,7 +10,7 @@ namespace Tancuri
 {
     public class Tank : PaintUpdateObject
     {
-        public const int MAX_AMMUNATION = 10;
+        public const int MAX_AMMUNATION = 5;
         public const int TANK_SIZE = 30;
         public const int CANNON_WIDTH = 6;
         public const int CANNON_LENGTH = 40;

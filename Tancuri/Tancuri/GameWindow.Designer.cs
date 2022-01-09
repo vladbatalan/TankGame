@@ -38,7 +38,6 @@
             this.labelPlayer2Ammo = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.labelPlayer2Health = new System.Windows.Forms.Label();
-            this.labelDebug2 = new System.Windows.Forms.Label();
             this.buttonRestart = new System.Windows.Forms.Label();
             this.timerReload = new System.Windows.Forms.Timer(this.components);
             this.canvas = new Tancuri.MyCanvas();
@@ -131,15 +130,6 @@
             this.labelPlayer2Health.TabIndex = 2;
             this.labelPlayer2Health.Text = "Health:\r\n100";
             // 
-            // labelDebug2
-            // 
-            this.labelDebug2.AutoSize = true;
-            this.labelDebug2.Location = new System.Drawing.Point(364, 574);
-            this.labelDebug2.Name = "labelDebug2";
-            this.labelDebug2.Size = new System.Drawing.Size(39, 13);
-            this.labelDebug2.TabIndex = 7;
-            this.labelDebug2.Text = "Debug";
-            // 
             // buttonRestart
             // 
             this.buttonRestart.AutoSize = true;
@@ -155,7 +145,7 @@
             // 
             // timerReload
             // 
-            this.timerReload.Interval = 3000;
+            this.timerReload.Interval = 1500;
             this.timerReload.Tick += new System.EventHandler(this.timerReload_Tick);
             // 
             // canvas
@@ -183,9 +173,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 615);
+            this.ClientSize = new System.Drawing.Size(565, 615);
             this.Controls.Add(this.buttonRestart);
-            this.Controls.Add(this.labelDebug2);
             this.Controls.Add(this.labelDebug);
             this.Controls.Add(this.canvas);
             this.Controls.Add(this.groupBox2);
@@ -217,7 +206,6 @@
         private System.Windows.Forms.Label labelPlayer2Ammo;
         private System.Windows.Forms.Label labelPlayer2Health;
         public System.Windows.Forms.Label labelWinMessage;
-        private System.Windows.Forms.Label labelDebug2;
         private System.Windows.Forms.Label buttonRestart;
         private System.Windows.Forms.Timer timerReload;
     }
