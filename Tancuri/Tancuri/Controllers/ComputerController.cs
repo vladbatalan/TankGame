@@ -13,14 +13,6 @@ namespace Tancuri
         private const int SHOOT_PAUSE_MILISECONDS = 500;
         private int timeSinceShoot = 0;
 
-        // Direction vector
-        private Point[] directions = new Point[] {
-                new Point(-1, 0),    // UP            
-                new Point(0,  1),    // Right            
-                new Point(1,  0),    // DOWN            
-                new Point(0, -1)     // LEFT            
-            };
-
         public ComputerController(Tank tank)
         {
             ControlledTank = tank;
@@ -46,7 +38,6 @@ namespace Tancuri
             if (isCannonAlligned)
                 ShootIfPossible(enemy);
 
-
             // Find shortest path to enemy
             // This returns the next position to go
             Point relativePoint = NextTileToEnemy(enemy);
@@ -55,50 +46,28 @@ namespace Tancuri
                     (ControlledTank.Position.Y / CollisionHandler.map.TileHeight + relativePoint.Y) * CollisionHandler.map.TileHeight + CollisionHandler.map.TileHeight / 2
                 );
 
-            //NextPosition = nextPositionPoint;
-
             if (relativePoint.X == 0 && relativePoint.Y == 0)
             {
                 ControlledTank.Flags.RotateBody = 0;
             }
-
             else
             {
                 
                 // Obtain the direction
                 int direction = 0;
-                while (direction < directions.Length)
+                while (direction < StrategyUtil.directions.Length)
                 {
-                    if (relativePoint.Equals(directions[direction]))
+                    if (relativePoint.Equals(StrategyUtil.directions[direction]))
                         break;
                     direction++;
                 }
 
                 //double verify = angles[direction];
-                double targetAngle = GetTargetAngle(nextPositionPoint, ControlledTank.CenterPosition);
+                double targetAngle = StrategyUtil.EvaluateAngleBetweenPoints(nextPositionPoint, ControlledTank.CenterPosition);
 
                 double normalized = ControlledTank.TankAngle < 0 ? ControlledTank.TankAngle + 360 : ControlledTank.TankAngle;
 
-                double difference = normalized - targetAngle;
-                double leftDistance, rightDistance;
-                if (difference < 0)
-                {
-                    // The left direction is main
-                    leftDistance = -difference;
-                    rightDistance = 360 - leftDistance;
-                }
-                else
-                {
-                    // The right direction is main
-                    rightDistance = difference;
-                    leftDistance = 360 - rightDistance;
-                }
-
-                // Ajust rotation
-                if (leftDistance >= rightDistance)
-                    ControlledTank.Flags.RotateBody = -1;
-                else
-                    ControlledTank.Flags.RotateBody = 1;
+                ControlledTank.Flags.RotateBody = StrategyUtil.AjustRotation(targetAngle, normalized);
                 
             }
 
@@ -119,37 +88,18 @@ namespace Tancuri
         private bool CannonFollowEnemy(Tank enemy)
         {
             // Get the angle between enemy and this
-            double targetedAngle = GetTargetAngle(enemy.CenterPosition, ControlledTank.CenterPosition);
+            double targetedAngle = StrategyUtil.EvaluateAngleBetweenPoints(enemy.CenterPosition, ControlledTank.CenterPosition);
             double normalizedAngle = ControlledTank.CannonAngle;
             if (normalizedAngle < 0) normalizedAngle += 360;
 
             double difference = normalizedAngle - targetedAngle;
-            double leftDistance, rightDistance;
 
             if(Math.Abs(difference) <= 5)
             {
                 ControlledTank.Flags.RotateCannon = 0;
                 return true;
             }
-
-            if (difference < 0)
-            {
-                // The left direction is main
-                leftDistance = -difference;
-                rightDistance = 360 - leftDistance;
-            }
-            else
-            {
-                // The right direction is main
-                rightDistance = difference;
-                leftDistance = 360 - rightDistance;
-            }
-
-            // Ajust rotation
-            if (leftDistance >= rightDistance)
-                ControlledTank.Flags.RotateCannon = -1;
-            else
-                ControlledTank.Flags.RotateCannon = 1;
+            ControlledTank.Flags.RotateCannon = StrategyUtil.AjustRotation(targetedAngle, normalizedAngle);
 
             return false;
         }
@@ -199,8 +149,6 @@ namespace Tancuri
         {
             // Extract map information
             int[,] mapMatrix = CollisionHandler.map.Tiles;
-            int height = mapMatrix.GetLength(0);
-            int width = mapMatrix.GetLength(1);
             int tileHeight = CollisionHandler.map.TileHeight;
             int tileWidth = CollisionHandler.map.TileWidth;
 
@@ -218,144 +166,10 @@ namespace Tancuri
 
             // Get the bordered matrix on which Lee algorithm will be performed
             // -1 = obstacle
-            int[,] border = new int[height + 2, width + 2];
-            // Ajust the borders of the matrix
-            //
-            // -1 -1 -1 -1 -1
-            // -1          -1
-            // -1          -1
-            // -1 -1 -1 -1 -1
+            int[,] border = StrategyUtil.LeeAlgoritm(mapMatrix, tankIndexes, enemyIndexes);
 
-            for (int i=1; i <= height; i++)
-                for (int j=1; j <= width; j++)
-                    border[i, j] = mapMatrix[i - 1, j - 1] == 1 ? -1 : 0;
-
-            for(int i=0; i <= height + 1; i++)
-                border[i, 0] = border[i, width + 1] = -1;
-            for(int j=0; j<=width + 1; j++)
-                border[0, j] = border[height + 1, j] = -1;
-
-            
-
-            // Get the queue
-            Queue<Point> toBeVisited = new Queue<Point>();
-
-            // Push the starting point
-            toBeVisited.Enqueue(tankIndexes);
-
-            // Set the initial distance as 1
-            border[tankIndexes.X, tankIndexes.Y] = 1;
-
-            // While there are points to be visited
-            while(toBeVisited.Count != 0)
-            {
-                // Get the first in the queue
-                Point currentPoint = toBeVisited.Dequeue();
-
-                // If it is the enemy, we found the path, we can stop
-                if (currentPoint.Equals(enemyIndexes))
-                    break;
-
-                // Foreach neighbour, check if it can be visited
-                foreach(Point delta in directions)
-                {
-                    // Get the neigbour by incrementing the position with delta
-                    Point neighbour = new Point(currentPoint.X + delta.X, currentPoint.Y + delta.Y);
-
-                    // If it can be visited
-                    //      - it has border = 0 (it was'n visited before and it is not margin)
-                    //      - there is no obstacle on the map
-                    if(border[neighbour.X, neighbour.Y] == 0 && mapMatrix[neighbour.X - 1, neighbour.Y -1] != 1)
-                    {
-                        // Update the border
-                        border[neighbour.X, neighbour.Y] = border[currentPoint.X, currentPoint.Y] + 1;
-
-                        // Add the neighbour to the queue
-                        toBeVisited.Enqueue(neighbour);
-                    }
-                }
-            }
-
-            // Obtain the list with the path
-            Point lastPoint = enemyIndexes;
-            Point current = enemyIndexes;
-            //Stack<Point> path = new Stack<Point>();
-
-            // Start from the end
-            //path.Push(enemyIndexes);
-
-            // Top element
-            //Point current = path.Peek();
-
-            // While not in the player place
-            while (!current.Equals(tankIndexes))
-            {
-                // Get the anterior position by checking all neighbours
-                int nextX = -10, nextY = -10;
-                Point nextPoint;
-                foreach (Point delta in directions)
-                {
-                    // Get the neigbour by incrementing the position with delta
-                     nextPoint = new Point(current.X + delta.X, current.Y + delta.Y);
-
-                    // The difference between 2 adiacent points in path is 1
-                    if(border[nextPoint.X, nextPoint.Y] - border[current.X, current.Y] == -1)
-                    {
-                        nextX = nextPoint.X;
-                        nextY = nextPoint.Y;
-                        break;
-                    }
-                }
-
-                // This sequence cannot be activated
-                if (nextX == -10 || nextY == -10)
-                    throw new Exception("The path could not be reconstructed!");
-
-                // lastPoint = currentPoint selected
-                lastPoint = current;
-                current = new Point(nextX, nextY);
-            }
-
-            // This element is the next position
-            Point nextPosition = lastPoint;
-
-            // Extract the exact coordinates on the map
-            return new Point(
-                 nextPosition.Y - tankIndexes.Y,
-                 nextPosition.X - tankIndexes.X
-                );
-            
-
-            //return new Point(-1, 0);
+            return StrategyUtil.FindDirectionToGo(border, tankIndexes, enemyIndexes);
         }
 
-        private double GetTargetAngle(Point target, Point currentPosition)
-        {
-            Point lineVector = new Point(target.X - currentPosition.X, target.Y - currentPosition.Y);
-            Point versor = new Point(1, 0);
-
-            double dotProduct = lineVector.X * versor.X + lineVector.Y * versor.Y;
-            double module = Math.Sqrt(lineVector.X * lineVector.X + lineVector.Y * lineVector.Y);
-
-            // To consider when module is 0
-            //...
-
-            //...
-
-            double targetedAngle = Math.Acos(dotProduct / module);
-
-            // To degrees
-            targetedAngle = ((180.0 / Math.PI) * targetedAngle) % 360;
-
-
-
-            if (targetedAngle < 0) targetedAngle += 360;
-
-            // Check position and flip angle if needed
-            if (target.Y < currentPosition.Y)
-                targetedAngle = 360 - targetedAngle;
-
-            return targetedAngle;
-        }
     }
 }
