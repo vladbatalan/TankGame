@@ -60,7 +60,6 @@ namespace Tancuri
             {
                 AllObjects.TryDequeue(out first);
             }
-
         }
     }
 }

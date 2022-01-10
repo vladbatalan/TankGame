@@ -67,6 +67,13 @@ namespace Tancuri
             }
         }
 
+        /// <summary>
+        /// We don't use that anymore
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="obstacleRate"></param>
+        /// <returns></returns>
         public static Map RandomGenerateMap(int height, int width, double obstacleRate)
         {
             Map generated = new Map(height, width);
