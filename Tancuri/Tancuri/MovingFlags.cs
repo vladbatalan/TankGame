@@ -24,6 +24,8 @@ namespace Tancuri
             Shoot = false;
         }
 
+
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
